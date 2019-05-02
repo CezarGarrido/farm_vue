@@ -115,6 +115,9 @@
 </template>
 
 <script>
+
+let globalThis = undefined;
+
 export default {
   props: {
     source: String
@@ -138,8 +141,11 @@ export default {
     left: false,
     transition: "slide-y-reverse-transition"
   }),
-  created() {},
+  created() {
+    self.globalThis = this;
+    },
   mounted() {
+ 
     var vm = this;
     /*	vm.map = L.map('map').setView([-41.2858, 174.78682], 14);
         var mapLink = 
@@ -375,12 +381,14 @@ export default {
 
       if (type === "polygon") {
         layer.bindPopup(
-          "Nome:<strong>Fazendinha</strong><br/>" +
-            "Área em m²: " +
-            turf.area(drawnItems.toGeoJSON()) +
-            " m² <br/>"+
-            " <button clear round color='green' fab>Test</button>"
-      
+          "<strong>Nome:</strong> Fazendinha<br/><br/>" +
+          "<strong>Área:</strong> " +
+          turf.area(drawnItems.toGeoJSON()) +
+          " m² <br/><br/>"+
+          "<button class='v-btn theme--light error' color='error' fab onclick='globalThis.removeFarm()'>Excluir"+
+          "</button>"+
+          "<button class='v-btn theme--light info' color='info' onclick='globalThis.dialog = true;' fab>Continuar"+
+          "</button>"
         );
         let seeArea = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
         console.log(seeArea);
@@ -454,6 +462,7 @@ export default {
       this.$emit("saveTalhao");
     },
     removeFarm() {
+      console.log("ok")
       this.$emit("removeFarm");
     },
     editFarm() {
@@ -482,120 +491,8 @@ export default {
 };
 </script>
 <style scoped>
-.btn {
-  position: relative;
-
-  display: block;
-  margin: 30px auto;
-  padding: 0;
-
-  overflow: hidden;
-
-  border-width: 0;
-  outline: none;
-  border-radius: 2px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
-  
-  background-color: #2ecc71;
-  color: #ecf0f1;
-  
-  transition: background-color .3s;
-}
-
-.btn:hover, .btn:focus {
-  background-color: #27ae60;
-}
-
-.btn > * {
-  position: relative;
-}
-
-.btn span {
-  display: block;
-  padding: 12px 24px;
-}
-
-.btn:before {
-  content: "";
-  
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  
-  display: block;
-  width: 0;
-  padding-top: 0;
-    
-  border-radius: 100%;
-  
-  background-color: rgba(236, 240, 241, .3);
-  
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-.btn:active:before {
-  width: 120%;
-  padding-top: 120%;
-  
-  transition: width .2s ease-out, padding-top .2s ease-out;
-}
-
-/* Styles, not important */
-*, *:before, *:after {
-  box-sizing: border-box;
-}
-
-html {
-  position: relative;
-  height: 100%;
-}
-
-body {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  
-  background-color: #ecf0f1;
-  color: #34495e;
-  font-family: Trebuchet, Arial, sans-serif;
-  text-align: center;
-}
-
-h2 {
-  font-weight: normal;
-}
-
-.btn.orange {
-  background-color: #e67e22;
-}
-.btn.green {
-  background-color: green;
-}
-
-.btn.orange:hover, .btn.orange:focus {
-  background-color: #d35400;
-}
-
-.btn.red {
-  background-color: #e74c3c;
-}
-
-.btn.red:hover, .btn.red:focus {
-  background-color: #c0392b;
-}
-.container {
+.container{
   padding: 0px !important;
- 
 }
 #map {
   width: 100%;

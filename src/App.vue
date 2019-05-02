@@ -18,7 +18,7 @@
       <router-view></router-view>
       
     </v-content>
-          <v-footer class="justify-center pl-0" inset app color="white">
+       <v-footer class="justify-center pl-0" inset app color="transparent">
         <v-spacer></v-spacer>
         <div> &copy;FarmVue <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors - {{ new Date().getFullYear() }}</div>
       </v-footer>
