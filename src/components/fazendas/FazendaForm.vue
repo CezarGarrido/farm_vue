@@ -22,9 +22,6 @@
         class="hidden-sm-and-down"
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn fab dark small color="gray">
-        <v-icon dark>info</v-icon>
-      </v-btn>
       <v-btn fab dark small color="green" @click="NovaFazenda">
         <v-icon dark>add</v-icon>
       </v-btn>
@@ -80,6 +77,27 @@
 <script>
 export default {
   data: () => ({
+    cards: [
+      { id: 0, title: "Nova Fazenda", src: "", flex: 3 },
+      {
+        id: 1,
+        title: "Fazenda Teste",
+        src: "https://cdn.vuetifyjs.com/images/cards/house.jpg",
+        flex: 3
+      },
+      {
+        id: 2,
+        title: "Fazenda Favorita",
+        src: "https://cdn.vuetifyjs.com/images/cards/road.jpg",
+        flex: 3
+      },
+      {
+        id: 3,
+        title: "Fazenda Jatobá",
+        src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg",
+        flex: 3
+      }
+    ],
     pagination: {
       sortBy: "name"
     },
@@ -193,9 +211,9 @@ export default {
         this.pagination.descending = false;
       }
     },
-      NovaFazenda(){
-          this.$router.push({ name: 'fazendasMap' });
-      }
+    NovaFazenda() {
+      this.$router.push({ name: "fazendasMap" ,params:{id:0}});
+    }
   }
 };
 </script>

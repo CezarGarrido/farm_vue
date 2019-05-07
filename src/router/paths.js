@@ -19,7 +19,7 @@ export default [
     )
   },
   {
-    path: '/fazendas/mapa',
+    path: '/fazenda/:id',
     meta: { breadcrumb: true },
     name: 'fazendasMap',
     component: () => import(
