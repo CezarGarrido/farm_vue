@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer style="z-index:9999;" v-model="drawer" fixed app>
+    <v-navigation-drawer style="z-index:9999;" v-model="drawer" fixed left app>
       <v-toolbar class="green" color="white" flat>
           
         <v-list class="pa-0">
@@ -31,7 +31,7 @@
             <v-icon>account_balance</v-icon>
           </v-list-tile-action>
           <v-list-tile-content >
-            <v-list-tile-title>Fazendas</v-list-tile-title>
+            <v-list-tile-title>Áreas</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile @click.stop="left = !left">

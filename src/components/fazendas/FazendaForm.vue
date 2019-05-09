@@ -1,10 +1,9 @@
 <template>
   <div>
-    <v-toolbar color="white" flat fixed app clipped-right>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+    <v-toolbar color="white" flat fixed app clipped-left>
       <v-toolbar-title class="ml-0 pl-3">
-        <span class="font-weight-light">Collections</span>
-        <span>Fazendas</span>
+        <span class="font-weight-light">Listagem de</span>
+        <span> Áreas</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>

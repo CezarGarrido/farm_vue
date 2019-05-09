@@ -1,90 +1,120 @@
 <template>
   <v-container flat fixed app>
-    <v-navigation-drawer v-model="drawerRight" fixed right app>
-      <v-container fill-height fluid grid-list-xl>
-        <v-layout justify-center wrap>
-          <v-flex xs12 md12>
-            <v-avatar slot="offset" class="mx-auto d-block" style="margin-top:65px;" size="170">
-              <img src="https://cdn3.iconfinder.com/data/icons/minimal-utility/512/Map.png">
-            </v-avatar>
-            <v-card-text class="text-xs-center">
-              <h1 class="category text-gray font-weight-thin mb-3">
-                <strong>{{area.descricao}}</strong>
-              </h1>
-              <h4 class="card-title font-weight-light">{{area.area_total}} em metros quadrados</h4>
-              <v-btn
-                color="success"
-                v-if="!editar_area"
-                round
-                class="font-weight-light"
-                @click.stop="editArea(area.id)"
-              >Editar</v-btn>
-              <v-btn
-                color="success"
-                v-if="editar_area"
-                round
-                class="font-weight-light"
-                @click.stop="disableEditArea(area.id)"
-              >Cancelar edição</v-btn>
-              <v-btn
-                color="error"
-                round
-                class="font-weight-light"
-                @click.stop="deleteArea(area.id)"
-              >Excluir</v-btn>
-              <v-btn color="default" round class="font-weight-light">Nova Produção</v-btn>
-            </v-card-text>
-          </v-flex>
-          <v-flex v-if="editar_area" xs12 md12>
-            <v-form>
-              <v-flex xs12 md12>
-                <v-text-field
-                  v-model="area.descricao"
-                  class="green-input"
-                  color="black"
-                  label="Nome"
-                />
-              </v-flex>
-              <v-flex xs12 md12>
-                <v-text-field
-                  v-model="area.area_total"
-                  label="Área"
-                  color="black"
-                  class="green-input"
-                />
-              </v-flex>
-              <v-flex xs12>
-                <v-textarea
-                  color="black"
-                  class="purple-input"
-                  label="Observações"
-                  value="Solo fértil bom para o plantio de feijão"
-                />
-              </v-flex>
-              <v-flex xs12 text-xs-center>
-                <v-btn class="mx-0 font-weight-light" color="success">Atualizar área</v-btn>
-              </v-flex>
-            </v-form>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-navigation-drawer>
-    <v-toolbar color="white" flat fixed app clipped-right>
-      <v-btn fab flat style="background-color: var(--gray);" small class="transparent">
-        <v-icon dark>arrow_back</v-icon>
-      </v-btn>
+    <v-toolbar color="white" fixed app clipped-right>
+      <v-toolbar-side-icon @click.stop="drawerRight = !drawerRight"></v-toolbar-side-icon>
       <v-toolbar-title class="ml-0 pl-3">
         <span class="font-weight-light">Nova</span>
         <span>Área</span>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-side-icon @click.stop="drawerRight = !drawerRight"></v-toolbar-side-icon>
+
       <!-- <v-toolbar-side-icon @click.stop></v-toolbar-side-icon> -->
     </v-toolbar>
+    <v-navigation-drawer v-model="drawerRight" fixed flat left app>
+      <v-layout flat row>
+        <v-flex xs12 sm12>
+          <v-card flat>
+            <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" height="300px">
+              <v-layout column fill-height>
+                <v-card-title>
+                  <v-btn dark icon>
+                    <v-icon>chevron_left</v-icon>
+                  </v-btn>
 
+                  <v-spacer></v-spacer>
+
+                  <v-btn dark icon class="mr-3">
+                    <v-icon>edit</v-icon>
+                  </v-btn>
+
+                  <v-btn dark icon>
+                    <v-icon>more_vert</v-icon>
+                  </v-btn>
+                </v-card-title>
+
+                <v-spacer></v-spacer>
+
+                <v-card-title class="white--text pl-3 pt-5">
+                  <div class="display-1 pl-0 pt-5">Talhão 0001</div>
+                </v-card-title>
+              </v-layout>
+            </v-img>
+
+            <v-list two-line>
+              <v-list-tile @click>
+                <v-list-tile-action>
+                  <v-icon color="indigo">schedule</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>Teste de produção</v-list-tile-title>
+                  <v-list-tile-sub-title>07/05/2019 à 08/05/2019</v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action>
+                  <v-icon>chevron_right</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
+
+              <v-list-tile @click>
+                <v-list-tile-action></v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>Teste de produção</v-list-tile-title>
+                  <v-list-tile-sub-title>07/05/2019 à 08/05/2019</v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action>
+                  <v-icon>chevron_right</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
+
+              <v-divider inset></v-divider>
+
+              <v-list-tile @click>
+                <v-list-tile-action>
+                  <v-icon color="indigo">assignment</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>aliconnors@example.com</v-list-tile-title>
+                  <v-list-tile-sub-title>Personal</v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action>
+                  <v-icon>delete</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
+
+              <v-list-tile @click>
+                <v-list-tile-action></v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>ali_connors@example.com</v-list-tile-title>
+                  <v-list-tile-sub-title>Work</v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action>
+                  <v-icon>delete</v-icon>
+                </v-list-tile-action>
+              </v-list-tile>
+
+              <v-divider inset></v-divider>
+
+              <v-list-tile @click>
+                <v-list-tile-action>
+                  <v-icon color="indigo">location_on</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>Fazenda Teste</v-list-tile-title>
+                  <v-list-tile-sub-title>Dourados, MS 79938</v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-navigation-drawer>
     <v-container style="position: fixed;" id="map"></v-container>
+
     <v-speed-dial
       fixed
+      style="z-index:9999;"
       v-model="fab"
       :top="top"
       :bottom="bottom"
@@ -125,6 +155,7 @@
         <span style="z-index:9999;">Limpar área</span>
       </v-tooltip>
     </v-speed-dial>
+
     <template>
       <v-layout row justify-center>
         <v-dialog v-model="dialog" persistent max-width="600px">
@@ -136,10 +167,16 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm12 md12>
-                    <v-text-field label="Nome da propriedade" v-model="Fazenda.descricao" required></v-text-field>
+                    <v-text-field
+                      label="Nome da propriedade"
+                      outline
+                      v-model="Fazenda.descricao"
+                      required
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm12 md12>
                     <v-text-field
+                      outline
                       v-model.number="Fazenda.area_total"
                       label="Área da propriedade"
                       hint="example of helper text only on focus"
@@ -203,8 +240,8 @@ export default {
     },
     drawer: null,
     drawerRight: false,
-    right: false,
-    left: false,
+    right: true,
+    left: true,
     bottomNav: -1,
     map: null,
     direction: "top",
@@ -213,7 +250,6 @@ export default {
     hover: true,
     tabs: null,
     top: false,
-    right: true,
     bottom: true,
     dialog: false,
     left: false,
@@ -735,7 +771,7 @@ export default {
     },
     showArea(area) {
       this.$emit("closeFarm");
-      this.editar_area = false;;
+      this.editar_area = false;
       this.area.id = area.id;
       this.area.descricao = area.descricao;
       this.area.area_total = area.area_total;
@@ -755,7 +791,7 @@ export default {
       this.$emit("newTalhao");
     },
     newFarm() {
-     // this.Fazenda = Object.assign(new FazendaClass(),this);
+      // this.Fazenda = Object.assign(new FazendaClass(),this);
       this.drawerRight = false;
       this.$emit("closeFarm");
       this.$emit("newFarm");
