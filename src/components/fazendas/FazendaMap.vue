@@ -1,6 +1,7 @@
 <template>
+<div>
   <v-container flat fixed app>
-    <v-toolbar color="white" fixed app clipped-right>
+    <v-toolbar color="green" fixed app clipped-right>
       <v-toolbar-side-icon @click.stop="drawerRight = !drawerRight"></v-toolbar-side-icon>
       <v-toolbar-title class="ml-0 pl-3">
         <span class="font-weight-light">Nova</span>
@@ -9,108 +10,26 @@
 
       <!-- <v-toolbar-side-icon @click.stop></v-toolbar-side-icon> -->
     </v-toolbar>
-    <v-navigation-drawer v-model="drawerRight" fixed flat left app>
-      <v-layout flat row>
-        <v-flex xs12 sm12>
-          <v-card flat>
-            <v-img src="https://cdn.vuetifyjs.com/images/cards/desert.jpg" height="300px">
-              <v-layout column fill-height>
-                <v-card-title>
-                  <v-btn dark icon>
-                    <v-icon>chevron_left</v-icon>
-                  </v-btn>
 
-                  <v-spacer></v-spacer>
-
-                  <v-btn dark icon class="mr-3">
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-
-                  <v-btn dark icon>
-                    <v-icon>more_vert</v-icon>
-                  </v-btn>
-                </v-card-title>
-
-                <v-spacer></v-spacer>
-
-                <v-card-title class="white--text pl-3 pt-5">
-                  <div class="display-1 pl-0 pt-5">Talhão 0001</div>
-                </v-card-title>
-              </v-layout>
-            </v-img>
-
-            <v-list two-line>
-              <v-list-tile @click>
-                <v-list-tile-action>
-                  <v-icon color="indigo">schedule</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>Teste de produção</v-list-tile-title>
-                  <v-list-tile-sub-title>07/05/2019 à 08/05/2019</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-icon>chevron_right</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-
-              <v-list-tile @click>
-                <v-list-tile-action></v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>Teste de produção</v-list-tile-title>
-                  <v-list-tile-sub-title>07/05/2019 à 08/05/2019</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-icon>chevron_right</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-
-              <v-divider inset></v-divider>
-
-              <v-list-tile @click>
-                <v-list-tile-action>
-                  <v-icon color="indigo">assignment</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>aliconnors@example.com</v-list-tile-title>
-                  <v-list-tile-sub-title>Personal</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-icon>delete</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-
-              <v-list-tile @click>
-                <v-list-tile-action></v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>ali_connors@example.com</v-list-tile-title>
-                  <v-list-tile-sub-title>Work</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-icon>delete</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-
-              <v-divider inset></v-divider>
-
-              <v-list-tile @click>
-                <v-list-tile-action>
-                  <v-icon color="indigo">location_on</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>Fazenda Teste</v-list-tile-title>
-                  <v-list-tile-sub-title>Dourados, MS 79938</v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-navigation-drawer>
-    <v-container style="position: fixed;" id="map"></v-container>
+    <!-- <v-tabs fixed-tabs slider-color="green">
+      <v-tab>Área</v-tab>
+      <v-tab>Produção</v-tab>
+      <v-tab>Notas</v-tab>
+      <v-tab>Tarefas</v-tab>
+      <v-tab-item>
+           <v-card>
+        <v-container style="position: fixed;" id="map"></v-container>
+           </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat >
+          <v-card-text>Produções</v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>-->
+    <v-card>
+      <v-container style="position: fixed;" id="map"></v-container>
+    </v-card>
 
     <v-speed-dial
       fixed
@@ -125,7 +44,7 @@
       :transition="transition"
     >
       <template v-slot:activator>
-        <v-btn style="position: relative;" v-model="fab" color="blue darken-2" dark fab>
+        <v-btn style="position: relative;" v-model="fab" color="yellow darken-2" dark fab>
           <v-icon style="position: relative;">edit</v-icon>
           <v-icon>close</v-icon>
         </v-btn>
@@ -208,7 +127,53 @@
         </v-dialog>
       </v-layout>
     </template>
+    <v-navigation-drawer v-model="dialog_full" right temporary fixed>
+      <v-layout row>
+        <v-flex xs12 sm12 offset-sm0>
+          <v-card>
+            <v-toolbar color="green">
+              <v-toolbar-side-icon></v-toolbar-side-icon>
 
+              <v-toolbar-title>Topics</v-toolbar-title>
+
+              <v-spacer></v-spacer>
+
+              <v-btn icon>
+                <v-icon>more_vert</v-icon>
+              </v-btn>
+            </v-toolbar>
+
+            <v-list>
+              <v-list-group
+                v-for="item in items"
+                :key="item.title"
+                v-model="item.active"
+                :prepend-icon="item.action"
+                no-action
+              >
+                <template v-slot:activator>
+                  <v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </template>
+
+                <v-list-tile v-for="subItem in item.items" :key="subItem.title" @click="">
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
+                  </v-list-tile-content>
+
+                  <v-list-tile-action>
+                    <v-icon>{{ subItem.action }}</v-icon>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </v-list-group>
+            </v-list>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-navigation-drawer>
     <v-footer class="justify-center pl-0" inset app color="transparent">
       <v-spacer></v-spacer>
       <div>
@@ -219,8 +184,11 @@
         >Google Maps</a>
         - {{ new Date().getFullYear() }}
       </div>
+      
     </v-footer>
   </v-container>
+ 
+</div>
 </template>
 
 <script>
@@ -232,6 +200,10 @@ export default {
     source: String
   },
   data: () => ({
+    dialog_full: false,
+    notifications: false,
+    sound: true,
+    widgets: false,
     editar_area: false,
     area: {
       id: 0,
@@ -255,7 +227,49 @@ export default {
     left: false,
     transition: "slide-y-reverse-transition",
     Fazenda: null,
-    Areas: []
+    Areas: [],
+    items: [
+      {
+        action: "local_activity",
+        title: "Attractions",
+        items: [{ title: "List Item" }]
+      },
+      {
+        action: "restaurant",
+        title: "Dining",
+        active: true,
+        items: [
+          { title: "Breakfast & brunch" },
+          { title: "New American" },
+          { title: "Sushi" }
+        ]
+      },
+      {
+        action: "school",
+        title: "Education",
+        items: [{ title: "List Item" }]
+      },
+      {
+        action: "directions_run",
+        title: "Family",
+        items: [{ title: "List Item" }]
+      },
+      {
+        action: "healing",
+        title: "Health",
+        items: [{ title: "List Item" }]
+      },
+      {
+        action: "content_cut",
+        title: "Office",
+        items: [{ title: "List Item" }]
+      },
+      {
+        action: "local_offer",
+        title: "Promotions",
+        items: [{ title: "List Item" }]
+      }
+    ]
   }),
   created() {
     this.Fazenda = new FazendaClass();
@@ -636,9 +650,12 @@ export default {
             layer.id +
             ")'>Excluir" +
             "</button>" +
-            "<button class='v-btn theme--light info' color='info' onclick='globalThis.dialog = true;' fab>Salvar" +
+            "<button class='v-btn theme--light info' color='info' onclick='globalThis.dialog_full = true;' fab>Salvar" +
             "</button>"
         );
+        layer.on("click", function(e) {
+          vm.map.setView(e.latlng, 13);
+        });
         let seeArea = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
         console.log("area:", seeArea);
         layer.showMeasurements();
@@ -859,7 +876,7 @@ export default {
 }
 #map {
   width: 100%;
-  height: 100%;
+  height: 90%;
   z-index: 1;
   /* position: fixed;*/
   /*padding: 0;

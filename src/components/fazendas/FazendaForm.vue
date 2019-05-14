@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar color="white" flat fixed app clipped-left>
+    <v-toolbar color="white" flat fixed app clipped-right>
       <v-toolbar-title class="ml-0 pl-3">
         <span class="font-weight-light">Listagem de</span>
         <span> Áreas</span>
@@ -62,7 +62,11 @@
           <td>
             <v-checkbox :input-value="props.selected" primary hide-details></v-checkbox>
           </td>
-          <td>{{ props.item.name }}</td>
+          <td>
+            <a class="private-link" href="/contacts/5400098/company/1701557373/" tabindex="0">
+              <span> {{ props.item.name }} </span>
+            </a>
+           </td>
           <td class="text-xs-right">{{ props.item.calories }}</td>
           <td class="text-xs-right">{{ props.item.fat }}</td>
           <td class="text-xs-right">{{ props.item.carbs }}</td>
@@ -216,3 +220,8 @@ export default {
   }
 };
 </script>
+<style>
+.private-link {
+    color: #0091ae;
+}
+</style>

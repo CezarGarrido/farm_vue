@@ -13,7 +13,7 @@ export default {
   components: {
     Drawer
   },
-  data: () => ({})
+  data: () => ({}),
 };
 </script>
     <style>
@@ -25,7 +25,7 @@ html {
 
 #map {
   width: 100%;
-  height: 100%;
+  height: 50%;
   z-index: 100;
 }
 
