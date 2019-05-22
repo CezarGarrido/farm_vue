@@ -1,18 +1,13 @@
 <template>
   <v-app id="inspire">
-    <Drawer/>
     <v-content>
       <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 <script>
-import Drawer from "./components/Drawer";
 export default {
   name: "App",
-  components: {
-    Drawer
-  },
   data: () => ({}),
 };
 </script>

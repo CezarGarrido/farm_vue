@@ -1,7 +1,7 @@
 export default [
 
   {
-    path: '*',
+    path: '/',
     meta: {
       public: true,
     },

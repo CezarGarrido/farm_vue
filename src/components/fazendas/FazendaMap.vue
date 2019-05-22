@@ -1,194 +1,224 @@
 <template>
-<div>
-  <v-container flat fixed app>
-    <v-toolbar color="green" fixed app clipped-right>
-      <v-toolbar-side-icon @click.stop="drawerRight = !drawerRight"></v-toolbar-side-icon>
-      <v-toolbar-title class="ml-0 pl-3">
-        <span class="font-weight-light">Nova</span>
-        <span>Área</span>
-      </v-toolbar-title>
-
-      <!-- <v-toolbar-side-icon @click.stop></v-toolbar-side-icon> -->
-    </v-toolbar>
-
-    <!-- <v-tabs fixed-tabs slider-color="green">
-      <v-tab>Área</v-tab>
-      <v-tab>Produção</v-tab>
-      <v-tab>Notas</v-tab>
-      <v-tab>Tarefas</v-tab>
-      <v-tab-item>
-           <v-card>
-        <v-container style="position: fixed;" id="map"></v-container>
-           </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card flat >
-          <v-card-text>Produções</v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs>-->
-    <v-card>
-      <v-container style="position: fixed;" id="map"></v-container>
-    </v-card>
-
-    <v-speed-dial
+  <div>
+    <v-navigation-drawer
+      :mini-variant.sync="mini"
+      v-model="drawer"
+      hide-overlay
       fixed
-      style="z-index:9999;"
-      v-model="fab"
-      :top="top"
-      :bottom="bottom"
-      :right="right"
-      :left="left"
-      :direction="direction"
-      :open-on-hover="hover"
-      :transition="transition"
+      left
+      app
+      v-bind:width="460"
     >
-      <template v-slot:activator>
-        <v-btn style="position: relative;" v-model="fab" color="yellow darken-2" dark fab>
-          <v-icon style="position: relative;">edit</v-icon>
-          <v-icon>close</v-icon>
-        </v-btn>
-      </template>
-      <v-tooltip style="z-index:9999;" left>
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" dark fab small @click="newFarm" color="green">
-            <v-icon dark>create</v-icon>
-          </v-btn>
-        </template>
-        <span style="z-index:9999;">Desenhar área</span>
-      </v-tooltip>
-      <v-tooltip style="z-index:9999;" left>
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" dark fab small color="yellow" @click="editFarm">
-            <v-icon dark>star</v-icon>
-          </v-btn>
-        </template>
-        <span style="z-index:9999;">Favoritar fazenda</span>
-      </v-tooltip>
-      <v-tooltip style="z-index:9999;" left>
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" dark fab small @click="closeFarm" color="red">
-            <v-icon dark>clear</v-icon>
-          </v-btn>
-        </template>
-        <span style="z-index:9999;">Limpar área</span>
-      </v-tooltip>
-    </v-speed-dial>
-
-    <template>
-      <v-layout row justify-center>
-        <v-dialog v-model="dialog" persistent max-width="600px">
-          <v-card>
-            <v-card-title>
-              <span class="headline">Nova Área</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field
-                      label="Nome da propriedade"
-                      outline
-                      v-model="Fazenda.descricao"
-                      required
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm12 md12>
-                    <v-text-field
-                      outline
-                      v-model.number="Fazenda.area_total"
-                      label="Área da propriedade"
-                      hint="example of helper text only on focus"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md6>
-                    <div>
-                      Sua
-                      <strong>cor</strong> favorita
-                    </div>
-
-                    <v-radio-group v-model="Fazenda.color" column>
-                      <v-radio label="Verde" color="green" value="green"></v-radio>
-                      <v-radio label="Vermelho" color="red" value="red"></v-radio>
-                      <v-radio label="Indigo" color="indigo" value="indigo"></v-radio>
-                      <v-radio label="Laranja" color="orange" value="orange"></v-radio>
-                    </v-radio-group>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-              <small>*indica que o campo é obrigatório</small>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click="dialog = false">Cancelar</v-btn>
-              <v-btn color="green darken-1" flat @click="salvarArea">Salvar</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-layout>
-    </template>
-    <v-navigation-drawer v-model="dialog_full" right temporary fixed>
-      <v-layout row>
-        <v-flex xs12 sm12 offset-sm0>
-          <v-card>
-            <v-toolbar color="green">
-              <v-toolbar-side-icon></v-toolbar-side-icon>
-
-              <v-toolbar-title>Topics</v-toolbar-title>
-
-              <v-spacer></v-spacer>
-
-              <v-btn icon>
-                <v-icon>more_vert</v-icon>
-              </v-btn>
-            </v-toolbar>
-
-            <v-list>
-              <v-list-group
-                v-for="item in items"
-                :key="item.title"
-                v-model="item.active"
-                :prepend-icon="item.action"
-                no-action
-              >
-                <template v-slot:activator>
-                  <v-list-tile>
-                    <v-list-tile-content>
-                      <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </template>
-
-                <v-list-tile v-for="subItem in item.items" :key="subItem.title" @click="">
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
-                  </v-list-tile-content>
-
-                  <v-list-tile-action>
-                    <v-icon>{{ subItem.action }}</v-icon>
-                  </v-list-tile-action>
-                </v-list-tile>
-              </v-list-group>
-            </v-list>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-navigation-drawer>
-    <v-footer class="justify-center pl-0" inset app color="transparent">
-      <v-spacer></v-spacer>
       <div>
-        &copy;O Produtor
-        <a
-          href="http://openstreetmap.org/copyright"
-          class="markdown--link markdown--internal"
-        >Google Maps</a>
-        - {{ new Date().getFullYear() }}
+        <v-toolbar color="green" dark tabs>
+          <v-toolbar-side-icon></v-toolbar-side-icon>
+
+          <v-toolbar-title>Farm</v-toolbar-title>
+
+          <v-spacer></v-spacer>
+
+          <v-btn icon>
+            <v-icon>search</v-icon>
+          </v-btn>
+
+          <v-btn icon>
+            <v-icon>more_vert</v-icon>
+          </v-btn>
+
+          <template v-slot:extension>
+            <v-tabs v-model="tab" color="green" grow>
+              <v-tabs-slider color="blue-grey"></v-tabs-slider>
+
+              <v-tab v-for="item in items" :key="item.title">{{ item.title }}</v-tab>
+            </v-tabs>
+          </template>
+        </v-toolbar>
+
+        <v-tabs-items v-model="tab">
+          <v-tab-item>
+            <v-card flat>
+              <v-card-text>Suas áreas</v-card-text>
+              <v-list class="pt-0" dense>
+                <v-divider></v-divider>
+
+                <v-list-tile v-for="area in Areas" :key="area.descricao" @click>
+                  <v-list-tile-action>
+                    <v-icon>terrain</v-icon>
+                  </v-list-tile-action>
+
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ area.descricao }}</v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
       </div>
-      
-    </v-footer>
-  </v-container>
- 
-</div>
+      <v-footer class="justify-center pl-0" inset app color="white">
+        <span></span>
+      </v-footer>
+    </v-navigation-drawer>
+    <v-container flat fixed app>
+      <v-card>
+        <v-container style="position: fixed;" id="map"></v-container>
+      </v-card>
+      <v-speed-dial
+        fixed
+        style="z-index:9999;"
+        v-model="fab"
+        :top="top"
+        :bottom="bottom"
+        :right="right"
+        :left="left"
+        :direction="direction"
+        :open-on-hover="hover"
+        :transition="transition"
+      >
+        <template v-slot:activator>
+          <v-btn style="position: relative;" v-model="fab" color="yellow darken-2" dark fab>
+            <v-icon style="position: relative;">edit</v-icon>
+            <v-icon>close</v-icon>
+          </v-btn>
+        </template>
+        <v-tooltip style="z-index:9999;" left>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" dark fab small @click="newFarm" color="green">
+              <v-icon dark>create</v-icon>
+            </v-btn>
+          </template>
+          <span style="z-index:9999;">Desenhar área</span>
+        </v-tooltip>
+        <v-tooltip style="z-index:9999;" left>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" dark fab small color="yellow" @click="editFarm">
+              <v-icon dark>star</v-icon>
+            </v-btn>
+          </template>
+          <span style="z-index:9999;">Favoritar fazenda</span>
+        </v-tooltip>
+        <v-tooltip style="z-index:9999;" left>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" dark fab small @click="closeFarm" color="red">
+              <v-icon dark>clear</v-icon>
+            </v-btn>
+          </template>
+          <span style="z-index:9999;">Limpar área</span>
+        </v-tooltip>
+      </v-speed-dial>
+
+      <template>
+        <v-layout row justify-center>
+          <v-dialog v-model="dialog" persistent max-width="600px">
+            <v-card>
+              <v-card-title>
+                <span class="headline">Nova Área</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12 sm12 md12>
+                      <v-text-field
+                        label="Nome da propriedade"
+                        outline
+                        v-model="Fazenda.descricao"
+                        required
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm12 md12>
+                      <v-text-field
+                        outline
+                        v-model.number="Fazenda.area_total"
+                        label="Área da propriedade"
+                        hint="example of helper text only on focus"
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6 md6>
+                      <div>
+                        Sua
+                        <strong>cor</strong> favorita
+                      </div>
+
+                      <v-radio-group v-model="Fazenda.color" column>
+                        <v-radio label="Verde" color="green" value="green"></v-radio>
+                        <v-radio label="Vermelho" color="red" value="red"></v-radio>
+                        <v-radio label="Indigo" color="indigo" value="indigo"></v-radio>
+                        <v-radio label="Laranja" color="orange" value="orange"></v-radio>
+                      </v-radio-group>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+                <small>*indica que o campo é obrigatório</small>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="red darken-1" flat @click="dialog = false">Cancelar</v-btn>
+                <v-btn color="green darken-1" flat @click="salvarArea">Salvar</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-layout>
+      </template>
+      <v-navigation-drawer v-model="dialog_full" right temporary fixed>
+        <v-layout row>
+          <v-flex xs12 sm12 offset-sm0>
+            <v-card>
+              <v-toolbar color="green">
+                <v-toolbar-side-icon></v-toolbar-side-icon>
+
+                <v-toolbar-title>Topics</v-toolbar-title>
+
+                <v-spacer></v-spacer>
+
+                <v-btn icon>
+                  <v-icon>more_vert</v-icon>
+                </v-btn>
+              </v-toolbar>
+
+              <v-list>
+                <v-list-group
+                  v-for="item in items"
+                  :key="item.title"
+                  v-model="item.active"
+                  :prepend-icon="item.action"
+                  no-action
+                >
+                  <template v-slot:activator>
+                    <v-list-tile>
+                      <v-list-tile-content>
+                        <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                      </v-list-tile-content>
+                    </v-list-tile>
+                  </template>
+
+                  <v-list-tile v-for="subItem in item.items" :key="subItem.title" @click>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
+                    </v-list-tile-content>
+
+                    <v-list-tile-action>
+                      <v-icon>{{ subItem.action }}</v-icon>
+                    </v-list-tile-action>
+                  </v-list-tile>
+                </v-list-group>
+              </v-list>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-navigation-drawer>
+      <v-footer class="justify-center pl-0" inset app color="transparent">
+        <v-spacer></v-spacer>
+        <div>
+          &copy;O Produtor
+          <a
+            href="http://openstreetmap.org/copyright"
+            class="markdown--link markdown--internal"
+          >Google Maps</a>
+          - {{ new Date().getFullYear() }}
+        </div>
+      </v-footer>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -200,6 +230,22 @@ export default {
     source: String
   },
   data: () => ({
+    tab: null,
+    text:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    items: [
+      { title: "Áreas", icon: "dashboard" },
+      { title: "Sobre", icon: "question_answer" }
+    ],
+    drawer: true,
+    drawerRight: null,
+    right: true,
+    left: false,
+    mini: false,
+    isLoading: false,
+    items2: [],
+    model: null,
+    search: null,
     dialog_full: false,
     notifications: false,
     sound: true,
@@ -210,10 +256,7 @@ export default {
       descricao: "",
       area_total: null
     },
-    drawer: null,
-    drawerRight: false,
-    right: true,
-    left: true,
+
     bottomNav: -1,
     map: null,
     direction: "top",
@@ -224,52 +267,9 @@ export default {
     top: false,
     bottom: true,
     dialog: false,
-    left: false,
     transition: "slide-y-reverse-transition",
     Fazenda: null,
-    Areas: [],
-    items: [
-      {
-        action: "local_activity",
-        title: "Attractions",
-        items: [{ title: "List Item" }]
-      },
-      {
-        action: "restaurant",
-        title: "Dining",
-        active: true,
-        items: [
-          { title: "Breakfast & brunch" },
-          { title: "New American" },
-          { title: "Sushi" }
-        ]
-      },
-      {
-        action: "school",
-        title: "Education",
-        items: [{ title: "List Item" }]
-      },
-      {
-        action: "directions_run",
-        title: "Family",
-        items: [{ title: "List Item" }]
-      },
-      {
-        action: "healing",
-        title: "Health",
-        items: [{ title: "List Item" }]
-      },
-      {
-        action: "content_cut",
-        title: "Office",
-        items: [{ title: "List Item" }]
-      },
-      {
-        action: "local_offer",
-        title: "Promotions",
-        items: [{ title: "List Item" }]
-      }
-    ]
+    Areas: []
   }),
   created() {
     this.Fazenda = new FazendaClass();
@@ -336,6 +336,7 @@ export default {
         result => {
           console.log(result);
           if (result != null) {
+            this.Areas = result.data;
             result.data.forEach(area => {
               let geo_json = JSON.parse(area.geo_json);
               let popupPolygon =
@@ -397,6 +398,7 @@ export default {
           }
         },
         err => {
+          this.Areas = [];
           console.log(err);
         }
       );
@@ -414,6 +416,9 @@ export default {
         vm.Fazenda.GetAllByProprieatioID(parseInt(vm.$route.params.id)).then(
           result => {
             console.log("resul..", result);
+
+            this.Areas = result.data;
+
             if (result.data != null) {
               result.data.forEach(area => {
                 let geo_json = JSON.parse(area.geo_json);
@@ -475,6 +480,7 @@ export default {
             }
           },
           err => {
+            this.Areas = [];
             console.log(err);
           }
         );
@@ -854,6 +860,25 @@ export default {
       );
     }
   },
+  watch: {
+    search(val) {
+      // Items have already been loaded
+      if (this.items2.length > 0) return;
+
+      this.isLoading = true;
+
+      // Lazily load input items
+      fetch("https://api.coinmarketcap.com/v2/listings/")
+        .then(res => res.json())
+        .then(res => {
+          this.items2 = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => (this.isLoading = false));
+    }
+  },
   computed: {
     activeFab() {
       switch (this.tabs) {
@@ -876,7 +901,7 @@ export default {
 }
 #map {
   width: 100%;
-  height: 90%;
+  height: 99%;
   z-index: 1;
   /* position: fixed;*/
   /*padding: 0;
