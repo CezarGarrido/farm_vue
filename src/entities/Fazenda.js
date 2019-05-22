@@ -5,9 +5,11 @@ export default class Fazenda {
         this.proprietario_id = 1;
         this.descricao = "";
         this.area_total = null;
-        this.geo_json = "";
+        this.geo_json = null;
         this.created_at = null;
         this.updated_at = null;
+        this.latidude = null;
+        this.longitude = null;
         this.color = 'green';
     }
     create() {

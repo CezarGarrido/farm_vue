@@ -10,7 +10,7 @@
       v-bind:width="460"
     >
       <div>
-        <v-toolbar color="green" dark tabs>
+        <v-toolbar color="green" extended dark tabs>
           <v-toolbar-side-icon></v-toolbar-side-icon>
 
           <v-toolbar-title>Farm</v-toolbar-title>
@@ -33,37 +33,176 @@
             </v-tabs>
           </template>
         </v-toolbar>
-
         <v-tabs-items v-model="tab">
           <v-tab-item>
-            <v-card flat>
-              <v-card-text>Suas áreas</v-card-text>
-              <v-list class="pt-0" dense>
-                <v-divider></v-divider>
+            <v-card v-if="!nova_fazenda" flat>
+              <v-container fill-height fluid>
+                <v-card-title primary-title>
+                  <div>
+                    <div class="headline">Suas Fazendas</div>
+                    <span class="grey--text">Total {{LENGHT_FAZENDAS}}</span>
+                  </div>
+                </v-card-title>
+                <v-spacer></v-spacer>
+                <v-card-actions>
+                  <v-btn @click="novaFazenda" color="success">Nova Fazenda</v-btn>
+                </v-card-actions>
+              </v-container>
+              <v-container fluid>
+                <v-layout row wrap>
+                  <v-flex pa-2 v-for="area in Areas" :key="area.descricao">
+                    <v-hover>
+                      <v-card
+                        style="cursor: pointer;"
+                        class="mx-auto"
+                        slot-scope="{ hover }"
+                        :class="`elevation-${hover ? 12 :2}`"
+                      >
+                        <v-container @click="detalheFazenda" fill-height fluid>
+                          <v-card-title primary-title>
+                            <div>
+                              <div class="blue--text">{{area.descricao}}</div>
+                              <span class="grey--text">10 Talhões</span>
+                            </div>
+                          </v-card-title>
+                        </v-container>
 
-                <v-list-tile v-for="area in Areas" :key="area.descricao" @click>
-                  <v-list-tile-action>
-                    <v-icon>terrain</v-icon>
-                  </v-list-tile-action>
-
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ area.descricao }}</v-list-tile-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-              </v-list>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn icon>
+                            <v-icon dark color>favorite</v-icon>
+                          </v-btn>
+                          <v-btn icon>
+                            <v-icon>edit</v-icon>
+                          </v-btn>
+                          <v-btn @click="deleteArea(area.id)" icon>
+                            <v-icon>delete</v-icon>
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-hover>
+                  </v-flex>
+                </v-layout>
+              </v-container>
             </v-card>
+            <div fill-height fluid v-if="LENGHT_FAZENDAS==0" class="container-empty-state">
+              <div center class="arvores">
+                <img heigh="600" width="250" src="https://visualpharm.com/assets/351/Farm%202-595b40b85ba036ed117dd19b.svg">
+              </div>
+              <h1 class="green--text">Você ainda não possui nenhuma fazenda.</h1>
+              <p
+                class="subtitle"
+              >Nesta funcionalidade será possível gerenciar as fazendas na plataforma, aqui será possível incluir, editar ou excluir fazendas cadastradas anteriormente.</p>
+              <p
+                class="call-to-action"
+              >Utilize um dos botões na parte superior da tela para adicionar uma nova fazenda.</p>
+            </div>
+            <FazendaForm v-if="nova_fazenda"></FazendaForm>
+          </v-tab-item>
+          <v-tab-item>
+            <v-card v-if="!nova_fazenda" flat>
+              <v-card row pa-2>
+                <v-container pa-2 fill-height fluid>
+                  <v-flex xs4 sm2 md2>
+                    <v-spacer></v-spacer>
+                    <v-avatar size="66px">
+                      <img src="https://image.flaticon.com/icons/svg/187/187039.svg" alt="Avatar">
+                    </v-avatar>
+                  </v-flex>
+                  <v-card-title primary-title>
+                    <div>
+                      <!-- <strong>Fazenda MS</strong> -->
+                      <div class="headline">Fazenda MS</div>
+                      <span class="grey--text">3e3e3e3</span>
+                    </div>
+                  </v-card-title>
+                </v-container>
+
+                <v-card-actions>
+                  <div>
+                    <div class="text-xs-center">
+                      <v-chip>
+                        <v-avatar class="teal">LAT</v-avatar>-33223433244
+                      </v-chip>
+                    </div>
+                  </div>
+                  <div class="text-xs-center">
+                    <v-chip>
+                      <v-avatar class="teal">LNG</v-avatar>-33223433244
+                    </v-chip>
+                  </div>
+                  <v-spacer></v-spacer>
+                  <v-btn icon>
+                    <v-icon dark color="red">favorite</v-icon>
+                  </v-btn>
+                  <v-btn icon>
+                    <v-icon>edit</v-icon>
+                  </v-btn>
+                  <v-btn @click="deleteArea(2)" icon>
+                    <v-icon>delete</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+              <v-container fill-height fluid>
+                <v-card-title primary-title>
+                  <div>
+                    <div class="headline">Talhões</div>
+                    <span class="grey--text">Total 10</span>
+                  </div>
+                </v-card-title>
+                <v-spacer></v-spacer>
+                <v-card-actions>
+                  <v-btn @click="novaFazenda" color="success">Novo Talhão</v-btn>
+                </v-card-actions>
+              </v-container>
+              <v-container fluid>
+                <v-layout row wrap>
+                  <v-flex pa-2 v-for="area in Areas" :key="area.descricao">
+                    <v-hover>
+                      <v-card
+                        class="mx-auto"
+                        slot-scope="{ hover }"
+                        :class="`elevation-${hover ? 12 :2}`"
+                      >
+                        <v-container fill-height fluid>
+                          <v-card-title primary-title>
+                            <div>
+                              <div class="headline orange--text">{{area.descricao}}</div>
+                              <span class="grey--text">10 Talhões</span>
+                            </div>
+                          </v-card-title>
+                        </v-container>
+
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn icon>
+                            <v-icon dark color="red">favorite</v-icon>
+                          </v-btn>
+                          <v-btn icon>
+                            <v-icon>edit</v-icon>
+                          </v-btn>
+                          <v-btn @click="deleteArea(area.id)" icon>
+                            <v-icon>delete</v-icon>
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-hover>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card>
+            <FazendaForm v-if="nova_fazenda"></FazendaForm>
           </v-tab-item>
         </v-tabs-items>
       </div>
-      <v-footer class="justify-center pl-0" inset app color="white">
-        <span></span>
-      </v-footer>
     </v-navigation-drawer>
+
     <v-container flat fixed app>
       <v-card>
         <v-container style="position: fixed;" id="map"></v-container>
       </v-card>
       <v-speed-dial
+        v-if="!nova_fazenda"
         fixed
         style="z-index:9999;"
         v-model="fab"
@@ -76,26 +215,18 @@
         :transition="transition"
       >
         <template v-slot:activator>
-          <v-btn style="position: relative;" v-model="fab" color="yellow darken-2" dark fab>
-            <v-icon style="position: relative;">edit</v-icon>
+          <v-btn style="position: relative;" v-model="fab" color="green darken-2" dark fab>
+            <v-icon style="position: relative;">add</v-icon>
             <v-icon>close</v-icon>
           </v-btn>
         </template>
         <v-tooltip style="z-index:9999;" left>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" dark fab small @click="newFarm" color="green">
+            <v-btn v-on="on" dark fab small @click="newFarm" color="blue">
               <v-icon dark>create</v-icon>
             </v-btn>
           </template>
           <span style="z-index:9999;">Desenhar área</span>
-        </v-tooltip>
-        <v-tooltip style="z-index:9999;" left>
-          <template v-slot:activator="{ on }">
-            <v-btn v-on="on" dark fab small color="yellow" @click="editFarm">
-              <v-icon dark>star</v-icon>
-            </v-btn>
-          </template>
-          <span style="z-index:9999;">Favoritar fazenda</span>
         </v-tooltip>
         <v-tooltip style="z-index:9999;" left>
           <template v-slot:activator="{ on }">
@@ -211,6 +342,7 @@
         <div>
           &copy;O Produtor
           <a
+            color="green"
             href="http://openstreetmap.org/copyright"
             class="markdown--link markdown--internal"
           >Google Maps</a>
@@ -222,20 +354,25 @@
 </template>
 
 <script>
+import { EventBus } from "../../event/events";
 import FazendaClass from "../../entities/Fazenda.js";
-
+import FazendaForm from "../../components/fazendas/FazendaForm";
 let globalThis = undefined;
 export default {
+  components: {
+    FazendaForm
+  },
   props: {
     source: String
   },
   data: () => ({
     tab: null,
+    nova_fazenda: false,
     text:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     items: [
-      { title: "Áreas", icon: "dashboard" },
-      { title: "Sobre", icon: "question_answer" }
+      { title: "Fazendas", icon: "dashboard" },
+      { title: "Detalhes", icon: "question_answer" }
     ],
     drawer: true,
     drawerRight: null,
@@ -337,7 +474,7 @@ export default {
           console.log(result);
           if (result != null) {
             this.Areas = result.data;
-            result.data.forEach(area => {
+            /*result.data.forEach(area => {
               let geo_json = JSON.parse(area.geo_json);
               let popupPolygon =
                 '<div class="v-card1 v-sheet theme--light"><div class="v-card__title v-card__title--primary">' +
@@ -391,10 +528,7 @@ export default {
               //layerGroup.addTo(vm.map);
               drawnItems.addLayer(polygon);
               //console.log(drawnItems)
-              /* layerGroup.eachLayer(function(layer) {
-              console.log(layer.id);
             });*/
-            });
           }
         },
         err => {
@@ -403,6 +537,16 @@ export default {
         }
       );
     }
+    let markFazenda = new L.Draw.Marker(vm.map, {});
+    EventBus.$on("markerFazenda", () => {
+      if (vm.Fazenda.geo_json == null) {
+        markFazenda.enable();
+      }
+    });
+    EventBus.$on("cancelarCadastro", () => {
+      vm.nova_fazenda = false;
+    });
+
     this.$on("fetchData", () => {
       if (vm.$route.params.id != 0) {
         // Creating a polygon
@@ -419,7 +563,7 @@ export default {
 
             this.Areas = result.data;
 
-            if (result.data != null) {
+            /*if (result.data != null) {
               result.data.forEach(area => {
                 let geo_json = JSON.parse(area.geo_json);
                 let popupPolygon =
@@ -473,11 +617,8 @@ export default {
                 //layerGroup.addTo(vm.map);
                 drawnItems.addLayer(polygon);
                 //console.log(drawnItems)
-                /* layerGroup.eachLayer(function(layer) {
-              console.log(layer.id);
-            });*/
               });
-            }
+            }*/
           },
           err => {
             this.Areas = [];
@@ -644,11 +785,24 @@ export default {
     vm.map.on("draw:created", function(e) {
       let type = e.layerType,
         layer = e.layer;
-      if (type === "marker") {
-        layer.bindPopup("A popup!");
-      }
       layer.id = Math.random();
       drawnItems.addLayer(layer);
+      if (type === "marker") {
+        //layer.bindPopup("Nova Fazenda!");
+        console.log(layer.toGeoJSON());
+        vm.Fazenda.geo_json = JSON.stringify(layer.toGeoJSON());
+        layer.on("mouseover", function(e) {
+          layer.editing.enable();
+        });
+        layer.on("mouseout", function(e) {
+          layer.update();
+          layer.editing.disable();
+          let area = layer.getLatLng();
+          vm.Fazenda.latitude = area.lat;
+          vm.Fazenda.longitude = area.lng;
+        });
+      }
+
       if (type === "polygon") {
         vm.Fazenda.geo_json = JSON.stringify(layer.getLatLngs()[0]);
         layer.bindPopup(
@@ -684,12 +838,25 @@ export default {
       let type = e.layerType;
       //layer = e.layers;
       console.log("tipo....", type);
+      layer.id = Math.random();
+      drawnItems.addLayer(layer);
+      if (type === "marker") {
+        layer.bindPopup("Nova Fazenda!");
+        // console["log"](layer.getLatLngs()[0]);
+        console.log(layer.toGeoJSON());
+        vm.Fazenda.geo_json = JSON.stringify(layer.toGeoJSON());
+        layer.editing.disable();
+        layer.on("click", function(e) {
+          layer.editing.enable();
+        });
+      }
       //console.log(layer)
     });
 
     let polygonDrawerFazenda = new L.Draw.Polygon(vm.map, polygon_options);
     let polygonDrawerTalhao = new L.Draw.Polygon(vm.map, polygon_options);
-    this.$on("salvarArea", () => {
+    EventBus.$on("salvarArea", fazenda => {
+      vm.Fazenda.descricao = fazenda.descricao;
       vm.Fazenda.create().then(
         result => {
           vm.map.eachLayer(function(layer) {
@@ -698,6 +865,7 @@ export default {
             }
           });
           console.log(result);
+
           this.$emit("fetchData");
         },
         err => {
@@ -781,6 +949,11 @@ export default {
     });
   },
   methods: {
+    novaFazenda() {
+      this.nova_fazenda = true;
+      //this.$router.push({ name: "fazendasForm" });
+      //fazendasForm
+    },
     getAllByProprietarioID(id) {
       this.Fazenda.GetAllByProprieatioID(1).then(
         result => {
@@ -841,8 +1014,8 @@ export default {
     openEdit(id) {
       console.log(id);
     },
-    salvarArea() {
-      this.$emit("salvarArea");
+    salvarArea(obj) {
+      this.$emit("salvarArea", obj);
     },
     newFazenda(fazenda) {
       this.openDialog();
@@ -852,12 +1025,15 @@ export default {
       this.Fazenda.Delete(id).then(
         result => {
           this.$emit("fetchData");
-          this.drawerRight = false;
+          //this.drawerRight = false;
         },
         err => {
           console.log(err);
         }
       );
+    },
+    detalheFazenda() {
+      this.tab = 1;
     }
   },
   watch: {
@@ -880,6 +1056,14 @@ export default {
     }
   },
   computed: {
+    LENGHT_FAZENDAS: function() {
+      console.log(this.Areas);
+      if (this.Areas == null) {
+        return 0;
+      } else {
+        return this.Areas.length;
+      }
+    },
     activeFab() {
       switch (this.tabs) {
         case "one":
